@@ -16,34 +16,52 @@ module Agx
         }
       end
 
-      def retrieve(resource, params = {})
+      def get(resource, params = {})
         resource = "/api/#{@version}/#{resource}"
         begin
-          request = current_token.get(resource, {:headers => { "oauth-scopes" => "referencedata" }, :params => params})
-        rescue OAuth2::Error, Faraday::Error, Errno::ETIMEDOUT => e
-          if e&.response
-            api_response = {
-              'status': e.response.status,
-              'message': e.message,
-              'body': nil
-            }
-            return api_response
-          else
-            api_response = {
-              'status': nil,
-              'message': e.message,
-              'body': nil
-            }
-            return api_response
-          end
-        else
-          api_response = {
-            'status': request.response.status,
-            'message': nil,
-            'body': Oj.load(request.response.body)
-          }
-          return api_response
+          response = current_token.get(resource, {:headers => { "oauth-scopes" => "referencedata" }, :params => params})
+          parse_response(response.body)
+        rescue => e
+          handle_error(e)
         end
+      end
+
+      protected
+
+      def parse_response(response_body)
+        parsed_response = nil
+
+        if response_body && !response_body.empty?
+          begin
+            parsed_response = Oj.load(response_body)
+          rescue Oj::ParseError
+            error = Agx::Error.new("Unparseable response: #{response_body}")
+            error.title = "UNPARSEABLE_RESPONSE"
+            error.status_code = 500
+            raise error
+          end
+        end
+
+        parsed_response
+      end
+
+      def handle_error(error)
+        error_params = {}
+
+        begin
+          if error.is_a?(OAuth2::Error, Faraday::Error) && error.response
+            error_params[:title] = "API Error"
+            error_params[:status_code] = error.response[:status]
+            error_params[:raw_body] = error.response[:body]
+            error_params[:body] = Oj.load(error.response[:body])
+          elsif error.is_a?(Errno::ETIMEDOUT)
+            error_params[:title] = "TIMEOUT_ERROR"
+          end
+        rescue Oj::ParseError
+        end
+
+        error_to_raise = Agx::Error.new(error.message, error_params)
+        raise error_to_raise
       end
 
       def current_token
@@ -75,8 +93,8 @@ module Agx
               :header_format => 'Bearer'
             }
           )
-        rescue OAuth2::Error, Faraday::Error, Errno::ETIMEDOUT => e
-          # raise "OAuth2 Error: #{e.message}"
+        rescue => e
+          handle_error(e)
         else
           @token[:access_token] = new_token.token
           @token[:expires_at] = new_token.expires_at

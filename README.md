@@ -35,14 +35,14 @@ Setup agX Content Client (OAuth 2 Client Credentials Flow)
 
 Make get requests for Content API resources
 ```ruby
-# @agx_content_client.retrieve("ResourceName", params_hash)
+# @agx_content_client.get("ResourceName", params_hash)
 # => { status: 'http status code', message: 'error message', body: 'parsed_json_object' }
 
-crops_response = @agx_content_client.retrieve("Crop")
+crops_response = @agx_content_client.get("Crop")
 crops = crops_response[:body]
 
 # Passing in publishDate as param
-weeds_response = @agx_content_client.retrieve("Weed", {publishDate: date.to_s})
+weeds_response = @agx_content_client.get("Weed", {publishDate: date.to_s})
 weeds = weeds_response[:body]
 ```
 
@@ -74,23 +74,22 @@ expiration timestamp.***
 
 Initiate a sync transaction, make get requests for Sync API resources, and end transaction
 ```ruby
-# @agx_sync_client.retrieve("Resource", start_time)
+# @agx_sync_client.get("Resource", start_time)
 # => { status: 'http status code', message: 'error message', body: 'parsed_json_object' }
 
 # You should persist transaction ID per user until transaction is successfully
 # ended by call to end_transaction
-transaction = @agx_sync_client.start_transaction
-user_transaction_id = transaction[:body]
+transaction_id = @agx_sync_client.start_transaction
 
-growers_response = @agx_sync_client.retrieve("Grower")
+growers_response = @agx_sync_client.get("Grower")
 growers = growers_response[:body]
 
 # Get all farms accessible for a grower
-farms_response = @agx_sync_client.retrieve("Grower/#{grower.guid}/Farm")
+farms_response = @agx_sync_client.get("Grower/#{grower.guid}/Farm")
 farms = farms_response[:body]
 
 # Get all server changes on farms accessible for a grower since start_time
-farms_response = @agx_sync_client.retrieve("Grower/#{grower.guid}/Farm", last_sync_date.to_s)
+farms_response = @agx_sync_client.get("Grower/#{grower.guid}/Farm", last_sync_date.to_s)
 farms = farms_response[:body]
 
 # etc...

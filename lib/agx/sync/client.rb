@@ -33,36 +33,16 @@ module Agx
         @transaction_id = transaction_id
       end
 
-      def retrieve(resource, start_time = nil)
+      def get(resource, start_time = nil)
         url = "#{@api_url}#{resource}?transactionId=#{@transaction_id}"
         if !start_time.nil?
           url = "#{@api_url}#{resource}?startTime=#{start_time}&transactionId=#{@transaction_id}"
         end
         begin
-          request = current_token.get(url, :headers => @headers)
-        rescue OAuth2::Error, Faraday::Error, Errno::ETIMEDOUT => e
-          if e&.response
-            api_response = {
-              'status': e.response.status,
-              'message': e.message,
-              'body': nil
-            }
-            return api_response
-          else
-            api_response = {
-              'status': nil,
-              'message': e.message,
-              'body': nil
-            }
-            return api_response
-          end
-        else
-          api_response = {
-            'status': request.response.status,
-            'message': nil,
-            'body': Oj.load(request.response.body)
-          }
-          return api_response
+          response = current_token.get(url, :headers => @headers)
+          parse_response(response.body)
+        rescue => e
+          handle_error(e)
         end
       end
 
@@ -75,30 +55,9 @@ module Agx
             "#{@api_url}Transaction",
             :headers => @headers
           )
-        rescue OAuth2::Error, Faraday::Error, Errno::ETIMEDOUT => e
-          if e&.response
-            api_response = {
-              'status': e.response.status,
-              'message': e.message,
-              'body': nil
-            }
-            return api_response
-          else
-            api_response = {
-              'status': nil,
-              'message': e.message,
-              'body': nil
-            }
-            return api_response
-          end
-        else
           @transaction_id = Oj.load(transaction_request.body)
-          api_response = {
-            'status': request.response.status,
-            'message': nil,
-            'body': @transaction_id
-          }
-          return api_response
+        rescue => e
+          handle_error(e)
         end
       end
 
@@ -108,30 +67,47 @@ module Agx
             "#{@api_url}Transaction/#{@transaction_id}",
             :headers => @headers
           )
-        rescue OAuth2::Error, Faraday::Error, Errno::ETIMEDOUT => e
-          if e&.response
-            api_response = {
-              'status': e.response.status,
-              'message': e.message,
-              'body': nil
-            }
-            return api_response
-          else
-            api_response = {
-              'status': nil,
-              'message': e.message,
-              'body': nil
-            }
-            return api_response
-          end
-        else
-          api_response = {
-            'status': request.response.status,
-            'message': nil,
-            'body': true
-          }
-          return api_response
+        rescue => e
+          handle_error(e)
         end
+      end
+
+      protected
+
+      def parse_response(response_body)
+        parsed_response = nil
+
+        if response_body && !response_body.empty?
+          begin
+            parsed_response = Oj.load(response_body)
+          rescue Oj::ParseError
+            error = Agx::Error.new("Unparseable response: #{response_body}")
+            error.title = "UNPARSEABLE_RESPONSE"
+            error.status_code = 500
+            raise error
+          end
+        end
+
+        parsed_response
+      end
+
+      def handle_error(error)
+        error_params = {}
+
+        begin
+          if error.is_a?(OAuth2::Error, Faraday::Error) && error.response
+            error_params[:title] = "API Error"
+            error_params[:status_code] = error.response[:status]
+            error_params[:raw_body] = error.response[:body]
+            error_params[:body] = Oj.load(error.response[:body])
+          elsif error.is_a?(Errno::ETIMEDOUT)
+            error_params[:title] = "TIMEOUT_ERROR"
+          end
+        rescue Oj::ParseError
+        end
+
+        error_to_raise = Agx::Error.new(error.message, error_params)
+        raise error_to_raise
       end
 
       def current_token

@@ -1,5 +1,5 @@
 module Agx
-  class AgxError < StandardError
+  class Error < StandardError
     attr_reader :title, :detail, :body, :raw_body, :status_code
 
     def initialize(message = "", params = {})
