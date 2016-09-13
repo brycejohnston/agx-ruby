@@ -40,6 +40,7 @@ module Agx
         if !start_time.nil?
           url = "#{@api_url}#{resource}?startTime=#{start_time}&transactionId=#{@transaction_id}"
         end
+        
         begin
           response = current_token.get(url, :headers => @headers)
           parse_response(response.body)
@@ -63,6 +64,8 @@ module Agx
         rescue => e
           handle_error(e)
         end
+
+        @transaction_id
       end
 
       def end_transaction
@@ -134,7 +137,8 @@ module Agx
           @token[:refresh_token] = new_token.refresh_token
           @token[:expires_at] = new_token.expires_at
         end
-        return new_token
+
+        new_token
       end
 
       def set_client

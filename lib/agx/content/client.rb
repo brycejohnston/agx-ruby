@@ -32,7 +32,7 @@ module Agx
 
       def validate_credentials
         unless @client_id && @client_secret
-          error = Agx::Error.new("agX Client Credentials Not Set", {title: "AGX_CREDENTIALS_ERROR"}) 
+          error = Agx::Error.new("agX Client Credentials Not Set", {title: "AGX_CREDENTIALS_ERROR"})
           raise error
         end
       end
@@ -88,6 +88,8 @@ module Agx
             new_token = oauth_token
           end
         end
+
+        new_token
       end
 
       def api_token
@@ -98,17 +100,16 @@ module Agx
               'client_secret' => @client_secret,
               'scope' => "referencedata"
             },
-            {
-              :header_format => 'Bearer'
-            }
+            { :header_format => 'Bearer' }
           )
         rescue => e
           handle_error(e)
-        else
-          @token[:access_token] = new_token.token
-          @token[:expires_at] = new_token.expires_at
-          return OAuth2::AccessToken.new @client, new_token.token
         end
+
+        @token[:access_token] = new_token.token
+        @token[:expires_at] = new_token.expires_at
+
+        OAuth2::AccessToken.new @client, new_token.token
       end
 
       def set_client
