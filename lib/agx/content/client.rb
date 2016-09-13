@@ -17,6 +17,8 @@ module Agx
       end
 
       def get(resource, params = {})
+        validate_credentials
+
         resource = "/api/#{@version}/#{resource}"
         begin
           response = current_token.get(resource, {:headers => { "oauth-scopes" => "referencedata" }, :params => params})
@@ -27,6 +29,13 @@ module Agx
       end
 
       protected
+
+      def validate_credentials
+        unless @client_id && @client_secret
+          error = Agx::Error.new("agX Client Credentials Not Set", {title: "AGX_CREDENTIALS_ERROR"}) 
+          raise error
+        end
+      end
 
       def parse_response(response_body)
         parsed_response = nil

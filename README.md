@@ -1,6 +1,6 @@
 # agX Platform API Client
 
-**(pre-alpha)** Ruby client for accessing SST Software's [agX Platform APIs](http://www.agxplatform.com/agx-apis/).
+Ruby client for accessing SST Software's [agX Platform APIs](http://www.agxplatform.com/agx-apis/).
 
 ## Installation
 
@@ -36,7 +36,7 @@ Setup agX Content Client (OAuth 2 Client Credentials Flow)
 Make get requests for Content API resources
 ```ruby
 # @agx_content_client.get("ResourceName", params_hash)
-# => { status: 'http status code', message: 'error message', body: 'parsed_json_object' }
+# => 'parsed_json_response_body'
 
 crops = @agx_content_client.get("Crop")
 
@@ -70,10 +70,12 @@ expiration timestamp.***
 )
 ```
 
-Initiate a sync transaction, make get requests for Sync API resources, and end transaction
+Initiate a sync transaction, make Sync API requests, and end transaction
+
+***Currently only get requests are supported***
 ```ruby
 # @agx_sync_client.get("Resource", start_time)
-# => { status: 'http status code', message: 'error message', body: 'parsed_json_object' }
+# => 'parsed_json_response_body'
 
 # You should persist transaction ID per user until transaction is successfully
 # ended by call to end_transaction

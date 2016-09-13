@@ -4,7 +4,7 @@ module Agx
 
     def initialize(message = "", params = {})
       @title       = params[:title]
-      @detail      = params[:detail]
+      @detail      = message
       @body        = params[:body]
       @raw_body    = params[:raw_body]
       @status_code = params[:status_code]

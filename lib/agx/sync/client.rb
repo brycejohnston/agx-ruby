@@ -34,6 +34,8 @@ module Agx
       end
 
       def get(resource, start_time = nil)
+        validate_credentials
+
         url = "#{@api_url}#{resource}?transactionId=#{@transaction_id}"
         if !start_time.nil?
           url = "#{@api_url}#{resource}?startTime=#{start_time}&transactionId=#{@transaction_id}"
@@ -47,6 +49,8 @@ module Agx
       end
 
       def start_transaction
+        validate_credentials
+
         if !@transaction_id.nil?
           end_transaction
         end
@@ -62,6 +66,8 @@ module Agx
       end
 
       def end_transaction
+        validate_credentials
+
         begin
           end_transaction_request = current_token.delete(
             "#{@api_url}Transaction/#{@transaction_id}",
@@ -73,6 +79,13 @@ module Agx
       end
 
       protected
+
+      def validate_credentials
+        unless @client_id && @client_secret
+          error = Agx::Error.new("agX Client Credentials Not Set", {title: "AGX_CREDENTIALS_ERROR"})
+          raise error
+        end
+      end
 
       def parse_response(response_body)
         parsed_response = nil
