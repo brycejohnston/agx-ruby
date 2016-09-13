@@ -1,5 +1,9 @@
 # agX Platform API Client
 
+[![Gem Version](http://img.shields.io/gem/v/agx.svg)][gem]
+
+[gem]: https://rubygems.org/gems/agx
+
 Ruby client for accessing SST Software's [agX Platform APIs](http://www.agxplatform.com/agx-apis/).
 
 ## Installation
