@@ -38,12 +38,10 @@ Make get requests for Content API resources
 # @agx_content_client.get("ResourceName", params_hash)
 # => { status: 'http status code', message: 'error message', body: 'parsed_json_object' }
 
-crops_response = @agx_content_client.get("Crop")
-crops = crops_response[:body]
+crops = @agx_content_client.get("Crop")
 
 # Passing in publishDate as param
-weeds_response = @agx_content_client.get("Weed", {publishDate: date.to_s})
-weeds = weeds_response[:body]
+weeds = @agx_content_client.get("Weed", {publishDate: date.to_s})
 ```
 
 ### agX Sync API
@@ -81,16 +79,13 @@ Initiate a sync transaction, make get requests for Sync API resources, and end t
 # ended by call to end_transaction
 transaction_id = @agx_sync_client.start_transaction
 
-growers_response = @agx_sync_client.get("Grower")
-growers = growers_response[:body]
+growers = @agx_sync_client.get("Grower")
 
 # Get all farms accessible for a grower
-farms_response = @agx_sync_client.get("Grower/#{grower.guid}/Farm")
-farms = farms_response[:body]
+farms = @agx_sync_client.get("Grower/#{grower.guid}/Farm")
 
 # Get all server changes on farms accessible for a grower since start_time
-farms_response = @agx_sync_client.get("Grower/#{grower.guid}/Farm", last_sync_date.to_s)
-farms = farms_response[:body]
+farms = @agx_sync_client.get("Grower/#{grower.guid}/Farm", last_sync_date.to_s)
 
 # etc...
 

@@ -95,11 +95,11 @@ module Agx
         error_params = {}
 
         begin
-          if error.is_a?(OAuth2::Error, Faraday::Error) && error.response
-            error_params[:title] = "API Error"
-            error_params[:status_code] = error.response[:status]
-            error_params[:raw_body] = error.response[:body]
-            error_params[:body] = Oj.load(error.response[:body])
+          if error.is_a?(OAuth2::Error) && error.response
+            error_params[:title] = "HTTP_#{error.response.status}_ERROR"
+            error_params[:status_code] = error.response.status
+            error_params[:raw_body] = error.response.body
+            error_params[:body] = Oj.load(error.response.body)
           elsif error.is_a?(Errno::ETIMEDOUT)
             error_params[:title] = "TIMEOUT_ERROR"
           end
