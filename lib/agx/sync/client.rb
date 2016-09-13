@@ -34,13 +34,13 @@ module Agx
       end
 
       def get(resource, start_time = nil)
-        validate_credentials
+        validate_sync_attributes
 
         url = "#{@api_url}#{resource}?transactionId=#{@transaction_id}"
         if !start_time.nil?
           url = "#{@api_url}#{resource}?startTime=#{start_time}&transactionId=#{@transaction_id}"
         end
-        
+
         begin
           response = current_token.get(url, :headers => @headers)
           parse_response(response.body)
@@ -86,6 +86,15 @@ module Agx
       def validate_credentials
         unless @client_id && @client_secret
           error = Agx::Error.new("agX Client Credentials Not Set", {title: "AGX_CREDENTIALS_ERROR"})
+          raise error
+        end
+      end
+
+      def validate_sync_attributes
+        validate_credentials
+
+        unless @sync_id && @transaction_id
+          error = Agx::Error.new("agX Sync Transaction Attributes Not Set", {title: "AGX_SYNC_ATTRIBUTES_ERROR"})
           raise error
         end
       end
