@@ -76,8 +76,13 @@ module Agx
             "#{@api_url}Transaction/#{@transaction_id}",
             :headers => @headers
           )
+          return true
         rescue => e
-          handle_error(e)
+          if e.response && e.response.body == "The specified transaction is invalid or expired."
+            return true
+          else
+            handle_error(e)
+          end
         end
       end
 
