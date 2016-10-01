@@ -110,8 +110,8 @@ After checking out the repo, run `bin/setup` to install dependencies. Then, run 
 Bug reports and pull requests are welcome on GitHub at https://github.com/brycejohnston/agx-ruby.
 
 
-## Copyright
+## License
 
-Copyright (c) 2016 Bryce Johnston. See LICENSE.txt for details.
+The gem is available as open source under the terms of the MIT License (see [LICENSE.txt](https://github.com/brycejohnston/agx-ruby/blob/master/LICENSE.txt))
 
 [agX](http://www.agxplatform.com/) is a registered trademark of [SST Software](http://www.sstsoftware.com/).
