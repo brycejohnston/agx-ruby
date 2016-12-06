@@ -5,16 +5,16 @@ module Agx
         :token_url, :version, :sync_id, :access_token, :refresh_token, :token_expires_at,
         :transaction_id
 
-      def initialize(client_id: nil, client_secret: nil, site: nil, host: nil,
-        authorize_url: nil, token_url: nil, version: nil, sync_id: nil,
-        access_token: nil, refresh_token: nil, token_expires_at: nil,
-        transaction_id: nil)
+      def initialize(client_id: nil, client_secret: nil, version: nil,
+        sync_id: nil, access_token: nil, refresh_token: nil,
+        token_expires_at: nil, transaction_id: nil, prod: true)
+        domain = (prod ? "agxplatform.com" : "qaagxplatform.com")
         @client_id = client_id || ENV['AGX_SYNC_CLIENT_ID']
         @client_secret = client_secret || ENV['AGX_SYNC_CLIENT_SECRET']
-        @site = site || "https://sync.agxplatform.com"
-        @host = host || "sync.agxplatform.com"
-        @authorize_url = authorize_url || "https://auth.agxplatform.com/Account/Authorize"
-        @token_url = token_url || "https://auth.agxplatform.com/Account/Token"
+        @site = "https://sync.#{domain}"
+        @host = host || "sync.#{domain}"
+        @authorize_url = "https://auth.#{domain}/Account/Authorize"
+        @token_url = "https://auth.#{domain}/Account/Token"
         @version = version || "v3"
         @sync_id = sync_id
         @api_url = "#{@site}/api/#{@version}/Account/#{@sync_id}/"

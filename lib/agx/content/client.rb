@@ -3,11 +3,12 @@ module Agx
     class Client
       attr_accessor :client_id, :client_secret, :site, :token_url, :version
 
-      def initialize(client_id: nil, client_secret: nil, site: nil, token_url: nil, version: nil)
+      def initialize(client_id: nil, client_secret: nil, version: nil, prod: true)
+        domain = (prod ? "agxplatform.com" : "qaagxplatform.com")
         @client_id = client_id || ENV['AGX_CONTENT_CLIENT_ID']
         @client_secret = client_secret || ENV['AGX_CONTENT_CLIENT_SECRET']
-        @site = site || "https://refdata.agxplatform.com"
-        @token_url = token_url || "https://auth.agxplatform.com/Account/Token"
+        @site = "https://refdata.#{domain}"
+        @token_url = "https://auth.#{domain}/Account/Token"
         @version = version || "v1"
         @client = set_client
         @token = {

@@ -31,9 +31,8 @@ Setup agX Content Client (OAuth 2 Client Credentials Flow)
 @agx_content_client = Agx::Content::Client.new(
   client_id: "your_client_id",
   client_secret: "your_client_secret",
-  site: "content-api-endpoint-url", # optional
-  token_url: "auth-token-endpoint-url", # optional
   version: "v1"  # optional
+  prod: true # optional, false for QA
 )
 ```
 
@@ -61,16 +60,13 @@ expiration timestamp.***
 @agx_sync_client = Agx::Sync::Client.new(
   client_id: "your_client_id",
   client_secret: "your_client_secret",
-  site: "sync-api-endpoint-url", # optional
-  host: "sync-api-endpoint-without-protocol", # optional
-  authorize_url: "authorize-endpoint-url", # optional
-  token_url: "auth-token-endpoint-url", # optional
   version: "v3",  # optional
   sync_id: "agx_user_sync_id",
   access_token: "agx_user_agx_token",
   refresh_token: "agx_user_refresh_token",
   token_expires_at: "access_token_expiration_timestamp",
-  transaction_id: "agx_user_previous_transaction_id" # optional
+  transaction_id: "agx_user_previous_transaction_id" # optional,
+  prod: true # optional, false for QA
 )
 ```
 
