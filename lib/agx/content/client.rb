@@ -100,8 +100,7 @@ module Agx
               'client_id' => @client_id,
               'client_secret' => @client_secret,
               'scope' => "referencedata"
-            },
-            { :header_format => 'Bearer' }
+            }
           )
         rescue => e
           handle_error(e)
