@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "agx"
   spec.version       = Agx::VERSION
   spec.authors       = ["Bryce Johnston"]
-  spec.email         = ["bryce@agdeveloper"]
+  spec.email         = ["bryce@agdeveloper.com"]
 
   spec.summary       = %q{Ruby client for accessing agX Platform APIs.}
   spec.description   = %q{Ruby client for accessing SST Software's agX Platform APIs.}
