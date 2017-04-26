@@ -13,9 +13,10 @@ module Agx
         @client_secret = client_secret || ENV['AGX_SYNC_CLIENT_SECRET']
         @site = "https://sync.#{domain}"
         @host = host || "sync.#{domain}"
-        @authorize_url = "https://auth.#{domain}/Account/Authorize"
-        @token_url = "https://auth.#{domain}/Account/Token"
-        @version = version || "v3"
+        @authorize_url = "https://auth.#{domain}/identity/connect/Authorize"
+        @token_url = "https://auth.#{domain}/identity/connect/Token"
+        @oic_config_url = "https://auth.#{domain}/.well-known/openid- configuration"
+        @version = version || "v4"
         @sync_id = sync_id
         @api_url = "#{@site}/api/#{@version}/Account/#{@sync_id}/"
         @headers = {

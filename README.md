@@ -49,7 +49,7 @@ weeds = @agx_content_client.get("Weed", {publishDate: date.to_s})
 
 ### agX Sync API
 
-Setup agX Sync Client (OAuth 2 Authorization Code Flow)
+Setup agX Sync v4 Client (OAuth 2.0 / OpenID Connect 1.0 Authorization Code Flow)
 
 ***This requires that you have already previously authenticated and authorized
 a user to agX through the authorization code grant flow process and have
@@ -60,7 +60,6 @@ expiration timestamp.***
 @agx_sync_client = Agx::Sync::Client.new(
   client_id: "your_client_id",
   client_secret: "your_client_secret",
-  version: "v3",  # optional
   sync_id: "agx_user_sync_id",
   access_token: "agx_user_agx_token",
   refresh_token: "agx_user_refresh_token",
