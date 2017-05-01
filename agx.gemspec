@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{Ruby client for accessing agX Platform APIs.}
   spec.description   = %q{Ruby client for accessing SST Software's agX Platform APIs.}
-  spec.homepage      = "https://github.com/brycejohnston/agx-ruby"
+  spec.homepage      = "https://github.com/beaorn/agx-ruby"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
@@ -19,8 +19,8 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "oj", "~> 3.0.0"
-  spec.add_dependency "oauth2", "~> 1.3.1"
+  spec.add_dependency "oj", "~> 3.0"
+  spec.add_dependency "oauth2", "~> 1.3"
 
   spec.add_development_dependency "bundler", "~> 1.12"
   spec.add_development_dependency "rake", "~> 10.0"
