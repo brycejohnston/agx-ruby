@@ -16,7 +16,7 @@ module Agx
         @authorize_url = "https://auth.#{domain}/identity/connect/Authorize"
         @token_url = "https://auth.#{domain}/identity/connect/Token"
         @oic_config_url = "https://auth.#{domain}/.well-known/openid- configuration"
-        @version = version || "v4"
+        @version = "v4"
         @sync_id = sync_id
         @api_url = "#{@site}/api/#{@version}/Account/#{@sync_id}/"
         @headers = {
