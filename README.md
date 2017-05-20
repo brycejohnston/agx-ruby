@@ -60,6 +60,7 @@ expiration timestamp.***
 @agx_sync_client = Agx::Sync::Client.new(
   client_id: "your_client_id",
   client_secret: "your_client_secret",
+  version: "v4",  # optional
   sync_id: "agx_user_sync_id",
   access_token: "agx_user_agx_token",
   refresh_token: "agx_user_refresh_token",
