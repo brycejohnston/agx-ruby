@@ -1,6 +1,6 @@
 module Agx
-  module Sync
-    class Pictures
+  module Pictures
+    class Client
       attr_accessor :client_id, :client_secret, :site, :host, :authorize_url,
         :token_url, :version, :sync_id, :access_token, :refresh_token, :token_expires_at
 

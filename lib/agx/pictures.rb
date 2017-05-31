@@ -1,4 +1,4 @@
-require "agx/sync/pictures"
+require "agx/pictures/client"
 
 module Agx
   module Pictures
