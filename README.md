@@ -49,11 +49,11 @@ weeds = @agx_content_client.get("Weed", {publishDate: date.to_s})
 
 ### agX Sync API
 
-Setup agX Sync v4 Client (OAuth 2.0 / OpenID Connect 1.0 Authorization Code Flow)
+Setup agX Sync Client (OAuth 2.0 / OpenID Connect 1.0 Authorization Code Flow)
 
 ***This requires that you have already previously authenticated and authorized
-a user to agX through the authorization code grant flow process and have
-persisted their sync ID, access token, refresh token, and access token
+a user to agX with required scopes through the authorization code grant flow process
+and have persisted their sync ID, access token, refresh token, and access token
 expiration timestamp.***
 
 ```ruby
@@ -65,7 +65,7 @@ expiration timestamp.***
   access_token: "agx_user_agx_token",
   refresh_token: "agx_user_refresh_token",
   token_expires_at: "access_token_expiration_timestamp",
-  transaction_id: "agx_user_previous_transaction_id" # optional,
+  transaction_id: "agx_user_previous_transaction_id", # optional
   prod: true # optional, false for QA
 )
 ```
@@ -95,6 +95,37 @@ farms = @agx_sync_client.get("Grower/#{grower.guid}/Farm", last_sync_date.to_s)
 
 # clear the persisted transaction ID for user after ending sync transaction
 user_transaction_id = nil
+```
+
+### agX Pictures API
+
+Setup agX Pictures Client
+
+```ruby
+@agx_pictures_client = Agx::Pictures::Client.new(
+  client_id: "your_client_id",
+  client_secret: "your_client_secret",
+  version: "v1",  # optional
+  sync_id: "agx_user_sync_id",
+  access_token: "agx_user_agx_token",
+  refresh_token: "agx_user_refresh_token",
+  token_expires_at: "access_token_expiration_timestamp",
+  filepath: "/path/to/pictures/",
+  prod: true # optional, false for QA
+)
+```
+
+Make get requests for Pictures API images and metadata
+
+***Currently only get requests are supported***
+```ruby
+
+# Get metadata
+image_meta = @agx_pictures_client.get_metadata("661ee0c0-0cbc-4a7b-be39-1a9de49acc86")
+
+# Get image and save to {filepath}/{sync_id}_{picture_id}.jpeg
+image = @agx_pictures_client.get("661ee0c0-0cbc-4a7b-be39-1a9de49acc86")
+# => "/path/to/pictures/7_661ee0c0-0cbc-4a7b-be39-1a9de49acc86.jpeg"
 ```
 
 ## Development

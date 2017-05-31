@@ -1,27 +1,24 @@
 module Agx
   module Sync
-    class Client
+    class Pictures
       attr_accessor :client_id, :client_secret, :site, :host, :authorize_url,
-        :token_url, :version, :sync_id, :access_token, :refresh_token, :token_expires_at,
-        :transaction_id
+        :token_url, :version, :sync_id, :access_token, :refresh_token, :token_expires_at
 
       def initialize(client_id: nil, client_secret: nil, version: nil,
         sync_id: nil, access_token: nil, refresh_token: nil,
-        token_expires_at: nil, transaction_id: nil, prod: true)
+        token_expires_at: nil, prod: true, filepath: nil)
         domain = (prod ? "agxplatform.com" : "qaagxplatform.com")
         @client_id = client_id || ENV['AGX_SYNC_CLIENT_ID']
         @client_secret = client_secret || ENV['AGX_SYNC_CLIENT_SECRET']
-        @site = "https://sync.#{domain}"
-        @host = host || "sync.#{domain}"
+        @site = "https://pictures.#{domain}"
+        @host = host || "pictures.#{domain}"
         @authorize_url = "https://auth.#{domain}/identity/connect/Authorize"
         @token_url = "https://auth.#{domain}/identity/connect/Token"
-        @oic_config_url = "https://auth.#{domain}/.well-known/openid-configuration"
-        @version = version || "v4"
+        @version = version || "v1"
         @sync_id = sync_id
-        @api_url = "#{@site}/api/#{@version}/Account/#{@sync_id}/"
+        @api_url = "#{@site}/api/#{@version}/picture/"
+        @filepath = filepath
         @headers = {
-          'Content-Type' => "application/json",
-          'Accept' => "application/json",
           'oauth-scopes' => "Sync",
           'Host' => @host
         }
@@ -31,17 +28,21 @@ module Agx
           refresh_token: refresh_token,
           expires_at: token_expires_at
         }
-        @transaction_id = transaction_id
       end
 
-      def get(resource, start_time = nil)
-        validate_sync_attributes
-
-        url = "#{@api_url}#{resource}?transactionId=#{@transaction_id}"
-        if !start_time.nil?
-          url = "#{@api_url}#{resource}?startTime=#{start_time}&transactionId=#{@transaction_id}"
+      def get(id)
+        url = "#{@api_url}#{id}"
+        begin
+          response = current_token.get(url, :headers => @headers)
+          filename = "#{@filepath}/#{@sync_id}_#{id}.jpeg"
+          File.open(filename, 'wb') { |fp| fp.write(response.body) }
+        rescue => e
+          handle_error(e)
         end
+      end
 
+      def get_metadata(id)
+        url = "#{@api_url}#{id}/metadata"
         begin
           response = current_token.get(url, :headers => @headers)
           parse_response(response.body)
@@ -50,60 +51,7 @@ module Agx
         end
       end
 
-      def start_transaction
-        validate_credentials
-
-        if !@transaction_id.nil?
-          end_transaction
-        end
-        begin
-          transaction_request = current_token.get(
-            "#{@api_url}Transaction",
-            :headers => @headers
-          )
-          @transaction_id = Oj.load(transaction_request.body)
-        rescue => e
-          handle_error(e)
-        end
-
-        @transaction_id
-      end
-
-      def end_transaction
-        validate_credentials
-
-        begin
-          end_transaction_request = current_token.delete(
-            "#{@api_url}Transaction/#{@transaction_id}",
-            :headers => @headers
-          )
-          return true
-        rescue => e
-          if e.response && e.response.body == "The specified transaction is invalid or expired."
-            return true
-          else
-            handle_error(e)
-          end
-        end
-      end
-
       protected
-
-      def validate_credentials
-        unless @client_id && @client_secret
-          error = Agx::Error.new("agX Client Credentials Not Set", {title: "AGX_CREDENTIALS_ERROR"})
-          raise error
-        end
-      end
-
-      def validate_sync_attributes
-        validate_credentials
-
-        unless @sync_id && @transaction_id
-          error = Agx::Error.new("agX Sync Transaction Attributes Not Set", {title: "AGX_SYNC_ATTRIBUTES_ERROR"})
-          raise error
-        end
-      end
 
       def parse_response(response_body)
         parsed_response = nil
