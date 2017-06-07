@@ -5,6 +5,7 @@ require "agx/version"
 require "agx/error"
 require "agx/content"
 require "agx/sync"
+require "agx/pictures"
 
 module Agx
 end
