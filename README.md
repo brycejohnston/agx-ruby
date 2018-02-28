@@ -74,13 +74,20 @@ Initiate a sync transaction, make Sync API requests, and end transaction
 
 ***Currently only get requests are supported***
 ```ruby
-# @agx_sync_client.get("Resource", start_time)
+# To make calls without starting a transaction for resources that don't
+# require it, use the get_nt method
+# @agx_sync_client.get_nt("Resource", start_time)
 # => 'parsed_json_response_body'
+growers = @agx_sync_client.get_nt("Grower")
 
-# You should persist transaction ID per user until transaction is successfully
-# ended by call to end_transaction
+# To make calls that require transactions (sync locking), call start_transaction
+# and then use the get method to call for the resource. You should persist
+# transaction ID per user until transaction is successfully ended by call
+# to end_transaction
 transaction_id = @agx_sync_client.start_transaction
 
+# @agx_sync_client.get("Resource", start_time)
+# => 'parsed_json_response_body'
 growers = @agx_sync_client.get("Grower")
 
 # Get all farms accessible for a grower
@@ -134,11 +141,11 @@ After checking out the repo, run `bin/setup` to install dependencies. Then, run 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/beaorn/agx-ruby.
+Bug reports and pull requests are welcome on GitHub at https://github.com/AgDevelopers/agx-ruby.
 
 
 ## License
 
-The gem is available as open source under the terms of the MIT License (see [LICENSE.txt](https://github.com/beaorn/agx-ruby/blob/master/LICENSE.txt))
+The gem is available as open source under the terms of the MIT License (see [LICENSE.txt](https://github.com/AgDevelopers/agx-ruby/blob/master/LICENSE.txt))
 
 [agX](http://www.agxplatform.com/) is a registered trademark of [SST Software](http://www.sstsoftware.com/).

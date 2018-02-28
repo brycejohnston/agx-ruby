@@ -50,6 +50,22 @@ module Agx
         end
       end
 
+      def get_nt(resource, start_time = nil)
+        validate_nt_sync_attributes
+
+        url = "#{@api_url}#{resource}"
+        if !start_time.nil?
+          url = "#{@api_url}#{resource}?startTime=#{start_time}"
+        end
+
+        begin
+          response = current_token.get(url, :headers => @headers)
+          parse_response(response.body)
+        rescue => e
+          handle_error(e)
+        end
+      end
+
       def start_transaction
         validate_credentials
 
@@ -100,6 +116,15 @@ module Agx
         validate_credentials
 
         unless @sync_id && @transaction_id
+          error = Agx::Error.new("agX Sync Transaction Attributes Not Set", {title: "AGX_SYNC_ATTRIBUTES_ERROR"})
+          raise error
+        end
+      end
+
+      def validate_nt_sync_attributes
+        validate_credentials
+
+        unless @sync_id
           error = Agx::Error.new("agX Sync Transaction Attributes Not Set", {title: "AGX_SYNC_ATTRIBUTES_ERROR"})
           raise error
         end
