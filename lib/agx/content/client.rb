@@ -8,7 +8,7 @@ module Agx
         @client_id = client_id || ENV['AGX_CONTENT_CLIENT_ID']
         @client_secret = client_secret || ENV['AGX_CONTENT_CLIENT_SECRET']
         @site = "https://refdata.#{domain}"
-        @token_url = "https://auth.#{domain}/Account/Token"
+        @token_url = "https://auth.#{domain}/identity/connect/token"
         @version = version || "v1"
         @client = set_client
         @token = {
