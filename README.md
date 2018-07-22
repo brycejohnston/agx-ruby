@@ -4,7 +4,7 @@
 
 [gem]: https://rubygems.org/gems/agx
 
-Ruby client for accessing SST Software's [agX Platform APIs](http://www.agxplatform.com/agx-apis/).
+Ruby client for accessing Proagrica's [agX Platform APIs](http://www.agxplatform.com/agx-apis/).
 
 ## Installation
 
@@ -106,6 +106,8 @@ user_transaction_id = nil
 
 ### agX Pictures API
 
+*Note: The pictures API client implementation still needs more work.*
+
 Setup agX Pictures Client
 
 ```ruby
@@ -148,4 +150,4 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/beaorn
 
 The gem is available as open source under the terms of the MIT License (see [LICENSE.txt](https://github.com/beaorn/agx-ruby/blob/master/LICENSE.txt))
 
-[agX](http://www.agxplatform.com/) is a registered trademark of [SST Software](http://www.sstsoftware.com/).
+[agX](http://www.agxplatform.com/) is a registered trademark of [Proagrica](http://www.proagrica.com).

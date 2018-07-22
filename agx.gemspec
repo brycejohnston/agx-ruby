@@ -7,11 +7,11 @@ Gem::Specification.new do |spec|
   spec.name          = "agx"
   spec.version       = Agx::VERSION
   spec.authors       = ["Bryce Johnston"]
-  spec.email         = ["bryce@agdeveloper.com"]
+  spec.email         = ["bryce@beaorn.com"]
 
   spec.summary       = %q{Ruby client for accessing agX Platform APIs.}
-  spec.description   = %q{Ruby client for accessing SST Software's agX Platform APIs.}
-  spec.homepage      = "https://github.com/AgDevelopers/agx-ruby"
+  spec.description   = %q{Ruby client for accessing Proagrica's agX Platform APIs.}
+  spec.homepage      = "https://github.com/beaorn/agx-ruby"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
