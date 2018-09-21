@@ -72,7 +72,6 @@ expiration timestamp.***
 
 Initiate a sync transaction, make Sync API requests, and end transaction
 
-***Currently only get requests are supported***
 ```ruby
 # To make calls without starting a transaction for resources that don't
 # require it, use the get_nt method
@@ -95,6 +94,21 @@ farms = @agx_sync_client.get("Grower/#{grower.guid}/Farm")
 
 # Get all server changes on farms accessible for a grower since start_time
 farms = @agx_sync_client.get("Grower/#{grower.guid}/Farm", last_sync_date.to_s)
+
+# Put (insert) a new Grower
+now = Time.now.utc
+new_grower = {
+  "SyncID": @agx_sync_client.sync_id,
+  "ID": SecureRandom.uuid,
+  "Name": "MYNEWGROWER",
+  "ModifiedOn": now,
+  "CreatedOn": now,
+  "CreatorID": @agx_sync_client.sync_id,
+  "EditorID": @agx_sync_client.sync_id,
+  "SchemaVersion": "4.0"
+}
+
+@client.put("Grower", new_grower.to_json)
 
 # etc...
 
