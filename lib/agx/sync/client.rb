@@ -72,20 +72,7 @@ module Agx
         url = "#{@api_url}#{resource}?transactionId=#{@transaction_id}"
 
         begin
-          response = current_token.put(url, {:headers => @headers, :body => body})
-          parse_response(response.body)
-        rescue => e
-          handle_error(e)
-        end
-      end
-
-      def put(resource, body)
-        validate_sync_attributes
-
-        url = "#{@api_url}#{resource}?transactionId=#{@transaction_id}"
-
-        begin
-          response = current_token.put(url, :headers => @headers)
+          response = current_token.put(url, {:body => body, :headers => @headers})
           parse_response(response.body)
         rescue => e
           handle_error(e)
