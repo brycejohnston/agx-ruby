@@ -108,7 +108,7 @@ module Agx
           )
           return true
         rescue => e
-          if e.response && e.response.body == "The specified transaction is invalid or expired."
+          if e.response && e.response.status && e.response.status.to_i >= 400
             return true
           else
             handle_error(e)
