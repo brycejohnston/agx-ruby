@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{Ruby client for accessing agX Platform APIs.}
   spec.description   = %q{Ruby client for accessing Proagrica's agX Platform APIs.}
-  spec.homepage      = "https://github.com/beaorn/agx-ruby"
+  spec.homepage      = "https://github.com/cropquest/agx-ruby"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
@@ -20,9 +20,9 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "oj", "< 4"
-  # spec.add_dependency "oauth2", "< 2"
+  spec.add_dependency "oauth2", "< 2"
 
-  spec.add_development_dependency "bundler", "~> 1.12"
-  spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "rspec", "~> 3.0"
+  spec.add_development_dependency "bundler", "~> 1.17"
+  spec.add_development_dependency "rake", "~> 13.0"
+  spec.add_development_dependency "rspec", "~> 3.9"
 end
