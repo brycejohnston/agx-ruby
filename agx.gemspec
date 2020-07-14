@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "agx"
   spec.version       = Agx::VERSION
   spec.authors       = ["Bryce Johnston"]
-  spec.email         = ["bryce@beaorn.com"]
+  spec.email         = ["bryce.johnston@hey.com"]
 
   spec.summary       = %q{Ruby client for accessing agX Platform APIs.}
   spec.description   = %q{Ruby client for accessing Proagrica's agX Platform APIs.}
@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "oj", "< 4"
   spec.add_dependency "oauth2", "< 2"
 
-  spec.add_development_dependency "bundler", "~> 1.17"
+  spec.add_development_dependency "bundler", "~> 2.1"
   spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "rspec", "~> 3.9"
 end

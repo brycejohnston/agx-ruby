@@ -203,6 +203,9 @@ module Agx
             token_url: @token_url,
             options: {
               ssl: { ca_path: "/usr/lib/ssl/certs" }
+            },
+            connection_opts: {
+              request: { timeout: 300 }
             }
           }
         )
