@@ -205,7 +205,7 @@ module Agx
               ssl: { ca_path: "/usr/lib/ssl/certs" }
             },
             connection_opts: {
-              request: { timeout: 300 }
+              request: { timeout: 90 }
             }
           }
         )

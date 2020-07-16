@@ -118,39 +118,6 @@ new_grower = {
 user_transaction_id = nil
 ```
 
-### agX Pictures API
-
-*Note: The pictures API client implementation still needs more work.*
-
-Setup agX Pictures Client
-
-```ruby
-@agx_pictures_client = Agx::Pictures::Client.new(
-  client_id: "your_client_id",
-  client_secret: "your_client_secret",
-  version: "v1",  # optional
-  sync_id: "agx_user_sync_id",
-  access_token: "agx_user_agx_token",
-  refresh_token: "agx_user_refresh_token",
-  token_expires_at: "access_token_expiration_timestamp",
-  filepath: "/path/to/pictures/",
-  prod: true # optional, false for QA
-)
-```
-
-Make get requests for Pictures API images and metadata
-
-***Currently only get requests are supported***
-```ruby
-
-# Get metadata
-image_meta = @agx_pictures_client.get_metadata("661ee0c0-0cbc-4a7b-be39-1a9de49acc86")
-
-# Get image and save to {filepath}/{sync_id}_{picture_id}.jpeg
-image = @agx_pictures_client.get("661ee0c0-0cbc-4a7b-be39-1a9de49acc86")
-# => "/path/to/pictures/7_661ee0c0-0cbc-4a7b-be39-1a9de49acc86.jpeg"
-```
-
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment. To install this gem onto your local machine, run `bundle exec rake install`.

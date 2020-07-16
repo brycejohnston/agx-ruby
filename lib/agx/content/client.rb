@@ -119,7 +119,7 @@ module Agx
           site: @site,
           token_url: @token_url,
           connection_opts: {
-            request: { timeout: 300 }
+            request: { timeout: 90 }
           }
         )
       end
