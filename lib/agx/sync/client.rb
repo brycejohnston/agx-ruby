@@ -116,6 +116,21 @@ module Agx
         end
       end
 
+      def current_token
+        new_token = OAuth2::AccessToken.new @client, @token[:access_token], {
+          expires_at: @token[:expires_at],
+          refresh_token: @token[:refresh_token]
+        }
+        if Time.now.to_i + 90 >= @token[:expires_at]
+          new_token = new_token.refresh!
+          @token[:access_token] = new_token.token
+          @token[:refresh_token] = new_token.refresh_token
+          @token[:expires_at] = new_token.expires_at
+        end
+
+        new_token
+      end
+
       protected
 
       def validate_credentials
@@ -177,21 +192,6 @@ module Agx
 
         error_to_raise = Agx::Error.new(error.message, error_params)
         raise error_to_raise
-      end
-
-      def current_token
-        new_token = OAuth2::AccessToken.new @client, @token[:access_token], {
-          expires_at: @token[:expires_at],
-          refresh_token: @token[:refresh_token]
-        }
-        if Time.now.to_i + 90 >= @token[:expires_at]
-          new_token = new_token.refresh!
-          @token[:access_token] = new_token.token
-          @token[:refresh_token] = new_token.refresh_token
-          @token[:expires_at] = new_token.expires_at
-        end
-
-        new_token
       end
 
       def set_client
