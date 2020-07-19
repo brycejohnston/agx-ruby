@@ -33,6 +33,8 @@ Setup agX Content Client (OAuth 2 Client Credentials Flow)
   client_secret: "your_client_secret",
   version: "v1"  # optional
   prod: true # optional, false for QA
+  access_token: "token_if_stored", # optional
+  expires_at: "token_expires_at_if_stored" # optional
 )
 ```
 

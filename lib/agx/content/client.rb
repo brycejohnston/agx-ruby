@@ -3,7 +3,7 @@ module Agx
     class Client
       attr_accessor :client_id, :client_secret, :site, :token_url, :version
 
-      def initialize(client_id: nil, client_secret: nil, version: nil, prod: true)
+      def initialize(client_id: nil, client_secret: nil, version: nil, prod: true, access_token: nil, expires_at: nil)
         domain = (prod ? "agxplatform.com" : "qaagxplatform.com")
         @client_id = client_id || ENV['AGX_CONTENT_CLIENT_ID']
         @client_secret = client_secret || ENV['AGX_CONTENT_CLIENT_SECRET']
@@ -12,8 +12,8 @@ module Agx
         @version = version || "v1"
         @client = set_client
         @token = {
-          access_token: nil,
-          expires_at: nil
+          access_token: access_token,
+          expires_at: expires_at
         }
       end
 
@@ -27,6 +27,25 @@ module Agx
         rescue => e
           handle_error(e)
         end
+      end
+
+      def current_token
+        if @token[:access_token].nil? || @token[:expires_at].nil?
+          new_token = api_token
+        else
+          oauth_token = OAuth2::AccessToken.new(
+            @client,
+            @token[:access_token],
+            {expires_at: @token[:expires_at]}
+          )
+          if Time.now.to_i + 180 >= @token[:expires_at] || oauth_token.expired?
+            new_token = api_token
+          else
+            new_token = oauth_token
+          end
+        end
+
+        new_token
       end
 
       protected
@@ -72,25 +91,6 @@ module Agx
 
         error_to_raise = Agx::Error.new(error.message, error_params)
         raise error_to_raise
-      end
-
-      def current_token
-        if @token[:access_token].nil? || @token[:expires_at].nil?
-          new_token = api_token
-        else
-          oauth_token = OAuth2::AccessToken.new(
-            @client,
-            @token[:access_token],
-            {expires_at: @token[:expires_at]}
-          )
-          if Time.now.to_i + 180 >= @token[:expires_at] || oauth_token.expired?
-            new_token = api_token
-          else
-            new_token = oauth_token
-          end
-        end
-
-        new_token
       end
 
       def api_token
