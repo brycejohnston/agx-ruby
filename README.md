@@ -4,7 +4,7 @@
 
 [gem]: https://rubygems.org/gems/agx
 
-Ruby client for accessing Proagrica's [agX Platform APIs](http://www.agxplatform.com/agx-apis/).
+Ruby client for accessing Proagrica's [agX Platform APIs](https://proagrica.com/products/agx/).
 
 ## Installation
 
@@ -133,4 +133,4 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/beaorn
 
 The gem is available as open source under the terms of the MIT License (see [LICENSE.txt](https://github.com/beaorn/agx-ruby/blob/master/LICENSE.txt))
 
-[agX](http://www.agxplatform.com/) is a registered trademark of [Proagrica](http://www.proagrica.com).
+[agX](https://proagrica.com/products/agx/) is a registered trademark of [Proagrica](https://proagrica.com).
