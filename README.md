@@ -76,7 +76,7 @@ Initiate a sync transaction, make Sync API requests, and end transaction
 
 ```ruby
 # To make calls without starting a transaction for resources that don't
-# require it, use the get_nt method
+# require it, use the get_nt method (GET only requests don't need transactions)
 # @agx_sync_client.get_nt("Resource", start_time)
 # => 'parsed_json_response_body'
 growers = @agx_sync_client.get_nt("Grower")
@@ -126,7 +126,7 @@ After checking out the repo, run `bin/setup` to install dependencies. Then, run 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/cropquest/agx-ruby.
+Bug reports and pull requests are welcome on GitHub at https://github.com/beaorn/agx-ruby.
 
 
 ## License
